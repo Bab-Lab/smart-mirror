@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:smart_mirror/core/model/SmartMirror.dart';
 import 'package:smart_mirror/core/model/User.dart';
-import 'package:smart_mirror/modules/NewUserForm.dart';
 import 'package:smart_mirror/modules/TaskViewController.dart';
+import 'package:smart_mirror/modules/User/AuthenticationView.dart';
+import 'package:smart_mirror/modules/User/NewUserForm.dart';
+import 'package:smart_mirror/modules/User/UserAvatar.dart';
 
 ThemeData theme = ThemeData(
   primaryColor: Colors.black,
@@ -27,10 +29,12 @@ class SmartMirrorController extends StatelessWidget {
               return CircularProgressIndicator();
             else
               return InkWell(
-                child: Column(
-                  children: [CircleAvatar(), Text(snapshot.data!.name)],
-                ),
-                onTap: () {},
+                child: UserAvatar(user: snapshot.data!),
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            AuthenticationView(user: snapshot.data!))),
               );
           }));
     }
