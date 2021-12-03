@@ -33,6 +33,7 @@ dependencies:
   cryptography: ^2.0.5
 
 dev_dependencies:
+  test: ^1.17.10
   flutter_test:
     sdk: flutter
 

@@ -1,5 +1,5 @@
-import 'package:smart_mirror/core/model/Connection/IConnection.dart';
-import 'package:smart_mirror/core/model/User.dart';
+import 'package:smart_mirror/core/model/connection/iconnection.dart';
+import 'package:smart_mirror/core/model/user.dart';
 
 abstract class ITask {
   String uuid;

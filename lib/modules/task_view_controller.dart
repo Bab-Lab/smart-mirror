@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_mirror/core/model/Task/ITask.dart';
+import 'package:smart_mirror/core/model/Task/itask.dart';
 
 class TaskViewController extends StatefulWidget {
   const TaskViewController({Key? key}) : super(key: key);

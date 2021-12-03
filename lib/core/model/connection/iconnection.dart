@@ -1,4 +1,4 @@
-import 'package:smart_mirror/core/model/User.dart';
+import 'package:smart_mirror/core/model/user.dart';
 
 abstract class IConnection {
   final User user;

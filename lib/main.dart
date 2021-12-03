@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smart_mirror/core/model/SmartMirror.dart';
-import 'package:smart_mirror/modules/SmartMirrorController.dart';
+import 'package:smart_mirror/core/model/smart_mirror.dart';
+import 'package:smart_mirror/modules/smart_mirror_controller.dart';
 
 void main() {
   runApp(SmartMirrorApp());
