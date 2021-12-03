@@ -77,24 +77,22 @@ class _AuthenticationViewState extends State<AuthenticationView> {
           showDialog<String>(
               context: context,
               builder: (BuildContext context) => AlertDialog(
-                    title: const Text("Could not Authenticate"),
-                    content: Text(validateResult.join("\n\n")),
-                    actions: <Widget>[
-                      TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text("OK"))
-                    ],
-                  ));
+                title: const Text("Could not Authenticate"),
+                content: Text(validateResult.join("\n\n")),
+                actions: <Widget>[
+                  TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text("OK"))
+                ],
+              ));
         else
           Navigator.pop(context);
       });
     };
-    return Center(
-        child: UserFormPadding(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
+    return Center(child: UserFormPadding(child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
           Expanded(flex: 4, child: UserAvatar(user: widget.user)),
           Expanded(
               flex: 2,
@@ -111,6 +109,7 @@ class _AuthenticationViewState extends State<AuthenticationView> {
                 child: const Text("Submit"),
                 onPressed: submitDialog,
               ))
-        ])));
+        ]
+    )));
   }
 }
