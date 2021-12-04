@@ -6,11 +6,6 @@ import 'package:smart_mirror/modules/User/new_user_form.dart';
 import 'package:smart_mirror/modules/User/user_avatar.dart';
 import 'package:smart_mirror/modules/task_view_controller.dart';
 
-ThemeData theme = ThemeData(
-  primaryColor: Colors.black,
-  backgroundColor: Colors.black,
-);
-
 class SmartMirrorController extends StatelessWidget {
   final SmartMirror smartMirror;
   static const TaskViewController taskViewController = TaskViewController();
@@ -44,13 +39,12 @@ class SmartMirrorController extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var users = smartMirror.getUsers();
-    return Material(
-        child: users.isEmpty
-            ? NewUserForm(smartMirror: this.smartMirror)
-            : Center(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: getAvatars(users))));
+    return Material(child: users.isEmpty
+        ? NewUserForm(smartMirror: this.smartMirror)
+        : Scaffold(body: Center(child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: getAvatars(users)
+    ))));
   }
 }

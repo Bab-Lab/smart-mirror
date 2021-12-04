@@ -89,7 +89,7 @@ class _AuthenticationViewState extends State<AuthenticationView> {
           Navigator.pop(context);
       });
     };
-    return Center(child: UserFormPadding(child: Column(
+    return UserFormPadding(child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
@@ -110,6 +110,6 @@ class _AuthenticationViewState extends State<AuthenticationView> {
                 onPressed: submitDialog,
               ))
         ]
-    )));
+    ));
   }
 }

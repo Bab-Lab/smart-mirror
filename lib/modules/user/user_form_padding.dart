@@ -7,9 +7,9 @@ class UserFormPadding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
+    return Center(child: ConstrainedBox(
       constraints: BoxConstraints(maxHeight: 512, maxWidth: 512),
       child: child,
-    );
+    ));
   }
 }

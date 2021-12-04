@@ -9,7 +9,15 @@ class UserAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
-      CircleAvatar(maxRadius: 64),
+      CircleAvatar(
+          maxRadius: 64,
+          backgroundImage: NetworkImage(
+              'https://ui-avatars.com/api/'
+                  '?background=000000&color=fff&size=128'
+                  '&name='+ user.name.split(' ').join('+'),
+            scale: 1
+          ),
+      ),
       Container(
           padding: EdgeInsets.all(8.0),
           child: Text(user.name, style: TextStyle(fontSize: 24)))

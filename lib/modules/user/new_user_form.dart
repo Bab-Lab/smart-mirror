@@ -68,26 +68,24 @@ class _NewUserFormState extends State<NewUserForm> {
         showDialog<String>(
             context: context,
             builder: (BuildContext context) => AlertDialog(
-                  title: const Text("Could not Create user"),
-                  content: Text(makeUserResult.join("\n\n")),
-                  actions: <Widget>[
-                    TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text("OK"))
-                  ],
-                ));
+              title: const Text("Could not Create user"),
+              content: Text(makeUserResult.join("\n\n")),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text("OK"))
+              ],
+            ));
     };
 
     var nameFocus = new FocusNode();
     var passFocus = new FocusNode();
     var verifyFocus = new FocusNode();
 
-    return Center(
-        child: UserFormPadding(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
+    return UserFormPadding(child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
           Expanded(
               flex: 3,
               child: TextField(
@@ -122,6 +120,6 @@ class _NewUserFormState extends State<NewUserForm> {
                 child: const Text("Create New user"),
                 onPressed: submitDialog,
               ))
-        ])));
+        ]));
   }
 }
