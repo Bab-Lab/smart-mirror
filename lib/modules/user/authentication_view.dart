@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:smart_mirror/core/model/security.dart';
 import 'package:smart_mirror/core/model/user.dart';
 import 'package:smart_mirror/modules/User/user_avatar.dart';
 import 'package:smart_mirror/modules/User/user_form_padding.dart';
+import 'package:smart_mirror/modules/connection/connection_setup.dart';
 
 class AuthenticationView extends StatefulWidget {
   final User user;
@@ -26,7 +28,7 @@ class _AuthenticationViewState extends State<AuthenticationView> {
   Future<List<String>> tryValidate() async {
     var err = <String>[];
 
-    var passcode = User.tryConvert(passController.text);
+    var passcode = Secure.tryConvert(passController.text);
     if (passcode != null) {
       if (passController.text.length < 3) {
         err.add("Passcode must be at least of length 3");
@@ -85,8 +87,18 @@ class _AuthenticationViewState extends State<AuthenticationView> {
                       child: const Text("OK"))
                 ],
               ));
-        else
+        else {
           Navigator.pop(context);
+          if (widget.user.getConnections().isEmpty)
+            Navigator.push(context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        Material(
+                            child: ConnectionSetup(user: widget.user)
+                        )
+                )
+            );
+        }
       });
     };
     return UserFormPadding(child: Column(

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:smart_mirror/core/model/security.dart';
 import 'package:smart_mirror/core/model/smart_mirror.dart';
 import 'package:smart_mirror/core/model/user.dart';
 import 'package:smart_mirror/modules/User/user_form_padding.dart';
@@ -33,7 +34,7 @@ class _NewUserFormState extends State<NewUserForm> {
       err.add("Name is a required field");
     }
 
-    var passcode = User.tryConvert(passController.text);
+    var passcode = Secure.tryConvert(passController.text);
     if (passcode != null) {
       if (passController.text.length < 3) {
         err.add("Passcode must be at least of length 3");
@@ -47,9 +48,9 @@ class _NewUserFormState extends State<NewUserForm> {
 
     if (err.isNotEmpty) return err;
 
-    var nonce = User.getNonce();
+    var nonce = Secure.getNonce();
     var completer = Completer<User>();
-    User.getKeyHash(passcode!, nonce).then((passhash) => completer.complete(
+    Secure.getKeyHash(passcode!, nonce).then((passhash) => completer.complete(
         User(
             smartMirror: this.widget.smartMirror,
             name: nameController.text,

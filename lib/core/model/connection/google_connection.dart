@@ -1,6 +1,5 @@
-import 'dart:io';
-
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
+import 'package:flutter/material.dart';
 import 'package:googleapis/calendar/v3.dart';
 import "package:googleapis_auth/auth_io.dart";
 import 'package:smart_mirror/core/model/connection/iconnection.dart';
@@ -17,19 +16,32 @@ class GoogleConnection extends IConnection {
 
   GoogleConnection({required User user})
       : super(user: user, name: 'Google', url: '') {
-    if (Platform.isAndroid) {
+
+    if (defaultTargetPlatform == TargetPlatform.android) {
       _clientID = new ClientId(
           "671736850844-amjsdtn47b101fcn4f3qahg56dgo6egk.apps.googleusercontent.com",
           ""
       );
     } else if (kIsWeb) {
       _clientID = new ClientId(
-        "671736850844-7e6gubirl6tlp9rma3sj0hdhqkqo8kc0.apps.googleusercontent.com",
-        ""
+          "671736850844-7e6gubirl6tlp9rma3sj0hdhqkqo8kc0.apps.googleusercontent.com",
+          ""
       );
     } else {
       throw Error();
     }
+  }
+
+
+
+  Future<void> ensureConnected() async {
+    clientViaUserConsent(_clientID, _scopes, prompt).then((AuthClient client) {
+      var calendar = CalendarApi(client);
+      calendar.calendarList.list().then((value) => print("VAL________$value"));
+
+      var billy = 1;
+
+    });
   }
 
   void prompt(String url) async {
