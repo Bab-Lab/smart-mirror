@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:smart_mirror/core/model/task.dart';
+import 'package:smart_mirror/modules/task/task_view.dart';
 
-class TaskViewController extends StatefulWidget {
+class TasksViewController extends StatefulWidget {
   final List<Task> tasks;
 
-  const TaskViewController({Key? key, required this.tasks}) : super(key: key);
+  const TasksViewController({Key? key, required this.tasks}) : super(key: key);
 
   @override
-  _TaskViewControllerState createState() => _TaskViewControllerState();
+  _TasksViewControllerState createState() => _TasksViewControllerState();
 }
 
-class _TaskViewControllerState extends State<TaskViewController> {
+class _TasksViewControllerState extends State<TasksViewController> {
   int _currentSortColumn = 1;
   bool _isAscending = true;
 
@@ -20,6 +21,22 @@ class _TaskViewControllerState extends State<TaskViewController> {
   void initState() {
     _filteredTasks = widget.tasks;
     _filteredTasks.sort((a, b) => a.dateTime.compareTo(b.dateTime));
+    super.initState();
+  }
+  
+  void _showTaskView(Task task) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          content: TaskView(task: task),
+            actions: <Widget>[
+              new TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Close'),
+              ),
+            ]
+        )
+    );
   }
 
   Widget getTable(BuildContext context) {
@@ -45,10 +62,10 @@ class _TaskViewControllerState extends State<TaskViewController> {
                       * a.dateTime.compareTo(b.dateTime));
                 }))
           ],
-          rows: _filteredTasks.map((item) {
+          rows: _filteredTasks.map((task) {
             return DataRow(cells: [
-              DataCell(Text(item.name)),
-              DataCell(Text(item.dateTime.toIso8601String()))
+              DataCell(InkWell(child: Text(task.name)), onTap: () => _showTaskView(task) ),
+              DataCell(Text(task.dateTime.toIso8601String()))
             ]);
           }).toList(),
         ),

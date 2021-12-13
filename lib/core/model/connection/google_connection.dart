@@ -1,11 +1,13 @@
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/calendar/v3.dart' as googleAPI;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_mirror/core/model/connection/iconnection.dart';
 import 'package:smart_mirror/core/model/task.dart';
 import 'package:smart_mirror/core/model/user.dart';
 
 class GoogleConnection extends IConnection {
+  static const hasConnectionKey = 'hasGoogle';
   static const _scopes = [
     googleAPI.CalendarApi.calendarReadonlyScope,
     googleAPI.CalendarApi.calendarEventsReadonlyScope
@@ -76,17 +78,22 @@ class GoogleConnection extends IConnection {
 
   @override
   Future<bool> connect() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       await _googleSignIn.signIn();
+      prefs.setBool(hasConnectionKey, true);
       return true;
     } catch (error) {
       print(error);
+      prefs.setBool(hasConnectionKey, false);
       return false;
     }
   }
 
   @override
   Future<void> disconnect() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     await _googleSignIn.signOut();
+    prefs.setBool(hasConnectionKey, false);
   }
 }

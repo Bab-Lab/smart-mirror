@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_mirror/core/model/user.dart';
 import 'package:smart_mirror/modules/connection/connection_setup.dart';
-import 'package:smart_mirror/modules/task_view_controller.dart';
+import 'package:smart_mirror/modules/task/task_view_controller.dart';
 
 class SmartMirrorController extends StatelessWidget {
   final User user;
@@ -22,7 +22,7 @@ class SmartMirrorController extends StatelessWidget {
         future: user.connectAndLoad(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if (snapshot.hasData) {
-            return TaskViewController(tasks: user.getTasks());
+            return TasksViewController(tasks: user.getTasks());
           } else return Center(child: CircularProgressIndicator());
         }
     );

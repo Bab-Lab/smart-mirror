@@ -7,6 +7,7 @@ import 'package:smart_mirror/core/model/connection/iconnection.dart';
 import 'package:smart_mirror/core/model/task.dart';
 import 'package:smart_mirror/core/model/user.dart';
 class TrelloConnection extends IConnection {
+  static const hasConnectionKey = 'hasTrello';
   static const _apiKey = 'key=7bb05e73806a742e9b71975e59ead2f9';
   String? _apiToken;
 
@@ -27,17 +28,17 @@ class TrelloConnection extends IConnection {
       final result = await FlutterWebAuth.authenticate(
           url: _apiUrl, callbackUrlScheme: "com.lab.bab.smart_mirror");
       _apiToken = Uri.parse(result).fragment;
-      print(_apiToken);
     }
     if (_apiToken == null) return false;
     prefs.setString('Trello', _apiToken!);
+    prefs.setBool(hasConnectionKey, true);
     return true;
   }
 
   @override
-  Future<void> disconnect() {
-    // TODO: implement disconnect
-    throw UnimplementedError();
+  Future<void> disconnect() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(hasConnectionKey, false);
   }
 
   String getParams() => '?$_apiKey&$_apiToken';
