@@ -1,50 +1,59 @@
 import 'package:flutter/material.dart';
-import 'package:smart_mirror/core/model/smart_mirror.dart';
 import 'package:smart_mirror/core/model/user.dart';
-import 'package:smart_mirror/modules/User/authentication_view.dart';
-import 'package:smart_mirror/modules/User/new_user_form.dart';
-import 'package:smart_mirror/modules/User/user_avatar.dart';
+import 'package:smart_mirror/modules/connection/connection_setup.dart';
 import 'package:smart_mirror/modules/task_view_controller.dart';
 
 class SmartMirrorController extends StatelessWidget {
-  final SmartMirror smartMirror;
-  static const TaskViewController taskViewController = TaskViewController();
+  final User user;
 
-  const SmartMirrorController({Key? key, required this.smartMirror})
+  const SmartMirrorController({Key? key, required this.user})
       : super(key: key);
 
-  List<Widget> getAvatars(List<Future<User>> users) {
-    var avatars = <Widget>[];
-    for (int i = 0; i < users.length; i++) {
-      var user = users[i];
-      avatars.add(FutureBuilder(
-          future: user,
-          builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-            if (!snapshot.hasData)
-              return CircularProgressIndicator();
-            else
-              return InkWell(
-                child: UserAvatar(user: snapshot.data!),
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Material(
-                            child: AuthenticationView(user: snapshot.data!)))),
-              );
-          }));
-    }
-    return avatars;
+  void pushNewConnection(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Material(
+            child: ConnectionSetup(user: user)))
+    );
+  }
+
+  static Widget buildTaskView(User user) {
+    return FutureBuilder<bool>(
+        future: user.connectAndLoad(),
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.hasData) {
+            return TaskViewController(tasks: user.getTasks());
+          } else return Center(child: CircularProgressIndicator());
+        }
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    var users = smartMirror.getUsers();
-    return Material(child: users.isEmpty
-        ? NewUserForm(smartMirror: this.smartMirror)
-        : Scaffold(body: Center(child: Column(
+    var connections = user.getConnections();
+    return Material(child: Scaffold(body: Center(child: connections.isEmpty
+        ? ConnectionSetup(user: user)
+        : Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: getAvatars(users)
+        children: [
+          ElevatedButton(
+              child: Text('View Tasks'),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Material(
+                      child: buildTaskView(user)))
+              )
+          ),
+          ElevatedButton(
+              child: Text('Add Connection'),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Material(
+                      child: ConnectionSetup(user: user)))
+              )
+          )
+        ]
     ))));
   }
 }

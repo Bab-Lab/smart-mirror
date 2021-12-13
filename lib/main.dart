@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_mirror/core/model/smart_mirror.dart';
+import 'package:smart_mirror/core/model/user.dart';
 import 'package:smart_mirror/modules/smart_mirror_controller.dart';
 import 'package:smart_mirror/theme.dart';
 
@@ -8,7 +8,7 @@ void main() {
 }
 
 class SmartMirrorApp extends StatelessWidget {
-  final smartMirror = SmartMirror();
+  final user = User();
 
   // This widget is the root of your application.
   @override
@@ -18,7 +18,8 @@ class SmartMirrorApp extends StatelessWidget {
       theme: AppTheme.darkTheme,
       initialRoute: '/',
       routes: {
-        '/': (context) => SmartMirrorController(smartMirror: smartMirror),
+        '/': (context) => SmartMirrorController(user: user),
+        '/tasks': (context) => SmartMirrorController.buildTaskView(user)
       },
     );
   }

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:smart_mirror/core/model/connection/google_connection.dart';
+import 'package:smart_mirror/core/model/connection/trello_connection.dart';
 import 'package:smart_mirror/core/model/user.dart';
 
-class GoogleSignInButton extends StatefulWidget {
+class TrelloSignInButton extends StatefulWidget {
   final User user;
 
-  GoogleSignInButton({required this.user});
+  TrelloSignInButton({required this.user});
 
   @override
-  _GoogleSignInButtonState createState() => _GoogleSignInButtonState();
+  _TrelloSignInButtonState createState() => _TrelloSignInButtonState();
 }
 
-class _GoogleSignInButtonState extends State<GoogleSignInButton> {
+class _TrelloSignInButtonState extends State<TrelloSignInButton> {
   bool _isSigningIn = false;
 
   @override
@@ -31,7 +31,7 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
             _isSigningIn = true;
           });
 
-          var connection = GoogleConnection(user: widget.user);
+          var connection = TrelloConnection(user: widget.user);
           var canConnect = await connection.connect();
 
           setState(() {
@@ -39,7 +39,7 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
           });
 
           if (canConnect) {
-            widget.user.setGoogle(connection);
+            widget.user.setTrello(connection);
             Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
           }
         },
@@ -50,13 +50,13 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image(
-                image: AssetImage("assets/google_logo.png"),
+                image: AssetImage("assets/trello_logo.png"),
                 height: 35.0,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: Text(
-                  'Connect to Google',
+                  'Connect to Trello',
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.black54,
