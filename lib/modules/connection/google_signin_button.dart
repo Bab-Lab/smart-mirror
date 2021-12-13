@@ -38,6 +38,7 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
 
           var connection = GoogleConnection(user: widget.user);
           await connection.connect();
+          await connection.getCalendars();
 
           setState(() {
             _isSigningIn = false;

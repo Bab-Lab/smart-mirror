@@ -35,9 +35,9 @@ dependencies:
   # Adding http for web requests and auth
   http: ^0.13.4
   google_sign_in: ^5.2.1
+  google_sign_in_web: ^0.10.0+3
   googleapis: ^7.0.0
   googleapis_auth: ^1.3.0
-  url_launcher: ^6.0.17
 
   # additional storage support
   uuid: ^3.0.0
