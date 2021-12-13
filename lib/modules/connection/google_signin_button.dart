@@ -3,7 +3,7 @@ import 'package:smart_mirror/core/model/connection/google_connection.dart';
 import 'package:smart_mirror/core/model/user.dart';
 
 class GoogleSignInButton extends StatefulWidget {
-  User user;
+  final User user;
 
   GoogleSignInButton({required this.user});
 
@@ -36,8 +36,8 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
             _isSigningIn = true;
           });
 
-          var googleConnection = GoogleConnection(user: widget.user);
-          await googleConnection.ensureConnected();
+          var connection = GoogleConnection(user: widget.user);
+          await connection.connect();
 
           setState(() {
             _isSigningIn = false;

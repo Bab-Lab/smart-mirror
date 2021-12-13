@@ -1,53 +1,71 @@
-import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
-import 'package:flutter/material.dart';
-import 'package:googleapis/calendar/v3.dart';
-import "package:googleapis_auth/auth_io.dart";
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:googleapis/calendar/v3.dart' as googleAPI;
+import 'package:http/http.dart';
+import 'package:http/io_client.dart';
 import 'package:smart_mirror/core/model/connection/iconnection.dart';
 import 'package:smart_mirror/core/model/user.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+class GoogleAPIClient extends IOClient {
+  Map<String, String> _headers;
+
+  GoogleAPIClient(this._headers) : super();
+
+  @override
+  Future<IOStreamedResponse> send(BaseRequest request) =>
+      super.send(request..headers.addAll(_headers));
+
+  @override
+  Future<Response> head(Uri url, {Map<String, String>? headers}) =>
+      super.head(url, headers: headers!..addAll(_headers));
+}
+
 class GoogleConnection extends IConnection {
-  late final ClientId _clientID;
-  static const _scopes = const [
-    CalendarApi.calendarReadonlyScope,
-    CalendarApi.calendarEventsReadonlyScope,
-    CalendarApi.calendarSettingsReadonlyScope
+  static const _scopes = [
+    googleAPI.CalendarApi.calendarReadonlyScope,
+    googleAPI.CalendarApi.calendarEventsReadonlyScope
   ];
+  static final _googleSignIn  = GoogleSignIn(
+      clientId: "671736850844-amjsdtn47b101fcn4f3qahg56dgo6egk.apps.googleusercontent.com",
+      scopes: _scopes
+  );
+  static final identifier = "671736850844-amjsdtn47b101fcn4f3qahg56dgo6egk.apps.googleusercontent.com";
+  static final callbackUrlScheme = "com.googleusercontent.apps.671736850844-amjsdtn47b101fcn4f3qahg56dgo6egk";
+  static final redirectUrl = Uri.parse(callbackUrlScheme + ':/');
+
+  static final tokenEndpoint = Uri.parse('https://www.googleapis.com/oauth2/v4/token');
+  static final authorizationEndpoint = Uri.https('accounts.google.com', '/o/oauth2/v2/auth');
+
+  String? accessToken;
 
   GoogleConnection({required User user})
-      : super(user: user, name: 'Google', url: '') {
+      : super(user: user, name: 'Google');
 
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      _clientID = new ClientId(
-          "671736850844-amjsdtn47b101fcn4f3qahg56dgo6egk.apps.googleusercontent.com",
-          ""
-      );
-    } else if (kIsWeb) {
-      _clientID = new ClientId(
-          "671736850844-7e6gubirl6tlp9rma3sj0hdhqkqo8kc0.apps.googleusercontent.com",
-          ""
-      );
-    } else {
-      throw Error();
+  Future<void> connect() async {
+    final googleUser = await _googleSignIn.signIn();
+    final httpClient = GoogleAPIClient(await googleUser!.authHeaders);
+    final googleAPI.CalendarApi calendarAPI = googleAPI.CalendarApi(httpClient);
+    final googleAPI.Events calEvents = await calendarAPI.events.list("primary");
+    final appointments = <googleAPI.Event>[];
+    if (calEvents != null && calEvents.items != null) {
+      for (int i = 0; i < calEvents.items!.length; i++) {
+        final googleAPI.Event event = calEvents.items![i];
+        if (event.start == null) {
+          continue;
+        }
+        appointments.add(event);
+      }
     }
+    print(appointments);
   }
 
-
-
-  Future<void> ensureConnected() async {
-    clientViaUserConsent(_clientID, _scopes, prompt).then((AuthClient client) {
-      var calendar = CalendarApi(client);
-      calendar.calendarList.list().then((value) => print("VAL________$value"));
-
-      var billy = 1;
-
-    });
+  @override
+  Future<void> disconnect() {
+    // TODO: implement disconnect
+    throw UnimplementedError();
   }
 
   void prompt(String url) async {
-    print("Please go to the following URL and grant access:");
-    print("  => $url");
-    print("");
 
     if (await canLaunch(url)) {
       await launch(url);
