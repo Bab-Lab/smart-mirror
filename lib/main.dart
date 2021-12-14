@@ -59,8 +59,8 @@ class _SplashAppState extends State<SplashApp> {
     var hasGoogle = prefs.getBool(GoogleConnection.hasConnectionKey) ?? false;
     var hasTrello = prefs.getBool(TrelloConnection.hasConnectionKey) ?? false;
 
-    widget.onInitializationComplete(
-        user: User(hasGoogle: hasGoogle, hasTrello: hasTrello));
+    var user = User(hasGoogle: hasGoogle, hasTrello: hasTrello);
+    widget.onInitializationComplete(user: user);
   }
 
   @override
