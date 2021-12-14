@@ -63,7 +63,17 @@ class _TasksViewControllerState extends State<TasksViewController> {
     showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-            content: TaskView(task: task),
+            content: Builder(
+                builder: (context) {
+                  var height = MediaQuery.of(context).size.height;
+                  var width = MediaQuery.of(context).size.width;
+
+                  return Container(
+                    height: height - 400,
+                    width: width - 400,
+                    child: TaskView(task: task),
+                  );
+                }),
             actions: <Widget>[
               new TextButton(
                 onPressed: () => Navigator.of(context).pop(),

@@ -78,10 +78,8 @@ class TrelloConnection extends IConnection {
         var lastActivity = DateTime.parse(entry['dateLastActivity']);
         var due = entry['due'];
         var task = Task(
-            uuid: entry['id'],
-            name: entry['name'],
-            description: entry['desc'],
-            connection: this,
+            uuid: entry['id'], name: entry['name'],
+            description: entry['desc'], connection: this,
             dateTime: due != null ? DateTime.parse(due)
                 : DateTime(lastActivity.year + 1, lastActivity.month, lastActivity.day)
         );

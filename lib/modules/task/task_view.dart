@@ -8,8 +8,16 @@ class TaskView extends StatelessWidget {
 
   TableRow getRow(String header, String value) {
     return TableRow(children: [
-      TableCell(child: Text(header)),
-      TableCell(child: Text(value))
+      TableCell(child:
+      Container(
+          padding: EdgeInsets.all(16.0),
+          child: Text(header)
+      )),
+      TableCell(child: Container(
+          alignment: Alignment.centerRight,
+          padding: EdgeInsets.all(16.0),
+          child: Text(value)
+      ))
     ]);
   }
 
@@ -22,7 +30,7 @@ class TaskView extends StatelessWidget {
             verticalInside: borderSide
         ),
         columnWidths: const <int, TableColumnWidth>{
-          0: FixedColumnWidth(64),
+          0: FixedColumnWidth(128),
           1: FlexColumnWidth(),
         },
         children: <TableRow>[
