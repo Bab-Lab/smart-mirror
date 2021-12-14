@@ -28,11 +28,7 @@ class SmartMirrorApp extends StatelessWidget {
     return MaterialApp(
       title: 'smart-mirror',
       theme: AppTheme.darkTheme,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => SmartMirrorController(user: user),
-        '/tasks': (context) => SmartMirrorController.buildTaskView(user)
-      },
+      home: SmartMirrorController(user: user),
     );
   }
 }

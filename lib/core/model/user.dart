@@ -11,15 +11,21 @@ class User {
   TrelloConnection? _trelloConnection;
 
   User({
-      List<IConnection>? connections,
-      Map<String, Task>? tasks,
-      List<String>? newTasks,
-      bool hasGoogle = false,
-      bool hasTrello = false
+    List<IConnection>? connections,
+    Map<String, Task>? tasks,
+    List<String>? newTasks,
+    bool hasGoogle = false,
+    bool hasTrello = false
   }) :  _tasks = tasks ?? <String, Task>{},
         newTasks = newTasks ?? <String>[] {
-    if(hasGoogle) _googleConnection = GoogleConnection(user: this);
-    if(hasTrello) _trelloConnection = TrelloConnection(user: this);
+    if(hasGoogle) {
+      print('User had google before!');
+      _googleConnection = GoogleConnection(user: this);
+    }
+    if(hasTrello) {
+      print('User had trello before!');
+      _trelloConnection = TrelloConnection(user: this);
+    }
   }
 
   Future<bool> connectAndLoad() async {
@@ -45,6 +51,8 @@ class User {
     _trelloConnection = connection;
   }
   bool hasTrello() => _trelloConnection != null;
+
+  bool hasAllConnection() => hasGoogle() && hasTrello();
 
   List<IConnection> getConnections() {
     var connections = <IConnection>[];

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_mirror/core/model/connection/google_connection.dart';
 import 'package:smart_mirror/core/model/user.dart';
+import 'package:smart_mirror/modules/smart_mirror_controller.dart';
 
 class GoogleSignInButton extends StatefulWidget {
   final User user;
@@ -41,6 +42,8 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
           if (canConnect) {
             widget.user.setGoogle(connection);
             Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+            SmartMirrorController.pushTaskView(context, widget.user,
+                startingSelection: connection);
           }
         },
         child: Padding(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_mirror/core/model/connection/trello_connection.dart';
 import 'package:smart_mirror/core/model/user.dart';
+import 'package:smart_mirror/modules/smart_mirror_controller.dart';
 
 class TrelloSignInButton extends StatefulWidget {
   final User user;
@@ -40,7 +41,9 @@ class _TrelloSignInButtonState extends State<TrelloSignInButton> {
 
           if (canConnect) {
             widget.user.setTrello(connection);
-            Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+            Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);;
+            SmartMirrorController.pushTaskView(context, widget.user,
+                startingSelection: connection);
           }
         },
         child: Padding(
