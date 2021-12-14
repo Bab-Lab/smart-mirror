@@ -5,7 +5,6 @@ import 'package:smart_mirror/core/model/task.dart';
 
 class User {
   final Map<String, Task> _tasks;
-  final List<String> newTasks;
 
   GoogleConnection? _googleConnection;
   TrelloConnection? _trelloConnection;
@@ -16,8 +15,7 @@ class User {
     List<String>? newTasks,
     bool hasGoogle = false,
     bool hasTrello = false
-  }) :  _tasks = tasks ?? <String, Task>{},
-        newTasks = newTasks ?? <String>[] {
+  }) :  _tasks = tasks ?? <String, Task>{} {
     if(hasGoogle) {
       print('User had google before!');
       _googleConnection = GoogleConnection(user: this);

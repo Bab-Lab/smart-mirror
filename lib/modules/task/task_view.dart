@@ -27,9 +27,11 @@ class TaskView extends StatelessWidget {
         },
         children: <TableRow>[
           getRow('name', task.name),
+          getRow('source', task.connection.name),
           getRow('date', task.dateTime.toIso8601String()),
           if(task.endDateTime != null)
-            getRow('end', task.endDateTime!.toIso8601String())
+            getRow('end', task.endDateTime!.toIso8601String()),
+          getRow('description', task.description ?? ''),
         ]
     );
   }
